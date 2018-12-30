@@ -120,3 +120,19 @@ all.config
 kernel/configs/android-*.cfg
 
 drivers/oneplus
+
+*.rej
+*.diff
+*.patch
+*.list
+scripts/rkp_cfp/tmp/*
+
+# Kernel compilation output directory
+out/
+
+# Wireguard
+net/wireguard/
+
+# Build script and changelog generator
+build.sh
+changelog.sh
