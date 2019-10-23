@@ -613,8 +613,6 @@ static struct wcd_mbhc_register
 			  WCD9335_MBHC_CTL_2, 0x03, 0, 0),
 	WCD_MBHC_REGISTER("WCD_MBHC_HS_COMP_RESULT",
 			  WCD9335_ANA_MBHC_RESULT_3, 0x08, 3, 0),
-	WCD_MBHC_REGISTER("WCD_MBHC_IN2P_CLAMP_STATE",
-			  WCD9335_ANA_MBHC_RESULT_3, 0x10, 4, 0),
 	WCD_MBHC_REGISTER("WCD_MBHC_MIC_SCHMT_RESULT",
 			  WCD9335_ANA_MBHC_RESULT_3, 0x20, 5, 0),
 	WCD_MBHC_REGISTER("WCD_MBHC_HPHL_SCHMT_RESULT",
@@ -4157,7 +4155,7 @@ static int tasha_codec_enable_spk_anc(struct snd_soc_dapm_widget *w,
 	switch (event) {
 	case SND_SOC_DAPM_PRE_PMU:
 		ret = tasha_codec_enable_anc(w, kcontrol, event);
-		schedule_delayed_work(&tasha->spk_anc_dwork.dwork,
+		queue_delayed_work(system_power_efficient_wq, &tasha->spk_anc_dwork.dwork,
 				      msecs_to_jiffies(spk_anc_en_delay));
 		break;
 	case SND_SOC_DAPM_POST_PMD:
@@ -5760,11 +5758,11 @@ static int tasha_codec_enable_dec(struct snd_soc_dapm_widget *w,
 			snd_soc_write(codec, WCD9335_MBHC_ZDET_RAMP_CTL, 0x03);
 		}
 		/* schedule work queue to Remove Mute */
-		schedule_delayed_work(&tasha->tx_mute_dwork[decimator].dwork,
+		queue_delayed_work(system_power_efficient_wq, &tasha->tx_mute_dwork[decimator].dwork,
 				      msecs_to_jiffies(tx_unmute_delay));
 		if (tasha->tx_hpf_work[decimator].hpf_cut_off_freq !=
 							CF_MIN_3DB_150HZ)
-			schedule_delayed_work(
+			queue_delayed_work(system_power_efficient_wq, 
 					&tasha->tx_hpf_work[decimator].dwork,
 					msecs_to_jiffies(300));
 		/* apply gain after decimator is enabled */
@@ -12029,7 +12027,7 @@ static int tasha_dig_core_power_collapse(struct tasha_priv *tasha,
 
 	if (req_state == POWER_COLLAPSE) {
 		if (tasha->power_active_ref == 0) {
-			schedule_delayed_work(&tasha->power_gate_work,
+			queue_delayed_work(system_power_efficient_wq, &tasha->power_gate_work,
 			msecs_to_jiffies(dig_core_collapse_timer * 1000));
 		}
 	} else if (req_state == POWER_RESUME) {
@@ -14319,7 +14317,6 @@ static struct platform_driver tasha_codec_driver = {
 #ifdef CONFIG_PM
 		.pm = &tasha_pm_ops,
 #endif
-		.suppress_bind_attrs = true,
 	},
 };
 

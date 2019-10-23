@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2015, 2017-2018 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2012-2015, 2017 The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -112,7 +112,7 @@ static int32_t aprv2_core_fn_q(struct apr_client_data *data, void *priv)
 		avtimer.core_handle_q = NULL;
 		avtimer.avtimer_open_cnt = 0;
 		atomic_set(&avtimer.adsp_ready, 0);
-		schedule_delayed_work(&avtimer.ssr_dwork,
+		queue_delayed_work(system_power_efficient_wq, &avtimer.ssr_dwork,
 				  msecs_to_jiffies(SSR_WAKETIME));
 		break;
 	}
@@ -281,7 +281,7 @@ static void reset_work(struct work_struct *work)
 	}
 	pr_debug("%s:Q6 not ready-retry after sometime\n", __func__);
 	if (--avtimer.num_retries > 0) {
-		schedule_delayed_work(&avtimer.ssr_dwork,
+		queue_delayed_work(system_power_efficient_wq, &avtimer.ssr_dwork,
 			  msecs_to_jiffies(Q6_READY_RETRY));
 	} else {
 		pr_err("%s: Q6 failed responding after multiple retries\n",
@@ -514,7 +514,6 @@ static struct platform_driver dev_avtimer_driver = {
 	.driver = {
 		.name = "dev_avtimer",
 		.of_match_table = avtimer_machine_of_match,
-		.suppress_bind_attrs = true,
 	},
 };
 

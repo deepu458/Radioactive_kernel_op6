@@ -156,7 +156,7 @@ enum Tfa98xx_Status_ID {
 	Tfa98xx_I2C_Req_Done			= 0,	/* Request executed correctly and result, if any, is available for download */
 	Tfa98xx_I2C_Req_Busy			= 1,	/* Request is being processed, just wait for result */
 	Tfa98xx_I2C_Req_Invalid_M_ID	= 2,	/* Provided M-ID does not fit in valid rang [0..2] */
-	Tfa98xx_I2C_Req_Invalid_P_ID	= 3,	/* Provided P-ID isn�t valid in the given M-ID context */
+	Tfa98xx_I2C_Req_Invalid_P_ID	= 3,	/* Provided P-ID isnï¿½t valid in the given M-ID context */
 	Tfa98xx_I2C_Req_Invalid_CC		= 4,	/* Invalid channel configuration bits (SC|DS|DP|DC) combination */
 	Tfa98xx_I2C_Req_Invalid_Seq		= 5,	/* Invalid sequence of commands, in case the DSP expects some commands in a specific order */
 	Tfa98xx_I2C_Req_Invalid_Param	= 6,	/* Generic error */

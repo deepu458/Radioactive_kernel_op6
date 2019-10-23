@@ -30,15 +30,9 @@
 #include "wcd-mbhc-adc.h"
 #include "wcd-mbhc-v2.h"
 
-//Multimedia change it from 1700 to 1800
-//#define WCD_MBHC_ADC_HS_THRESHOLD_MV    1700
 #define WCD_MBHC_ADC_HS_THRESHOLD_MV    1800
-//Multimedia change end
 #define WCD_MBHC_ADC_HPH_THRESHOLD_MV   75
-//Multimedia change it from 1800 to 2700
-//#define WCD_MBHC_ADC_MICBIAS_MV         1800
 #define WCD_MBHC_ADC_MICBIAS_MV         2700
-//Multimedia change end
 #define WCD_MBHC_FAKE_INS_RETRY         4
 
 static int wcd_mbhc_get_micbias(struct wcd_mbhc *mbhc)
@@ -953,7 +947,7 @@ static irqreturn_t wcd_mbhc_adc_hs_rem_irq(int irq, void *data)
 
 	timeout = jiffies +
 		  msecs_to_jiffies(WCD_FAKE_REMOVAL_MIN_PERIOD_MS);
-	/* liuhaituo@MM.Audio 2018/6/8 modify adc_threshold is consistent with OMR1 */
+/* liuhaituo@MM.Audio 2018/6/8 modify adc_threshold is consistent with OMR1 */
 	adc_threshold = ((WCD_MBHC_ADC_HS_THRESHOLD_MV *
 				wcd_mbhc_get_micbias(mbhc)) /
 				WCD_MBHC_ADC_MICBIAS_MV);
